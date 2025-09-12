@@ -45,11 +45,11 @@ terraform init
 terraform plan
 terraform apply --auto-approve
 
-
-## Post-Deployment Configuration
-
-### Configure kubectl
+### 2. **Configure kubectl**
 
 ```bash
 aws eks update-kubeconfig --name <cluster_name> --region <aws_region>
+
+### 3. **Check the nodes**
+
 
