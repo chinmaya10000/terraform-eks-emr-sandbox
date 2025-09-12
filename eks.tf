@@ -21,7 +21,7 @@ module "eks" {
 
   # KMS encryption for cluster secrets
   create_kms_key                  = true
-  kms_key_description             = "KMS key for EKS cluster ${var.name}"
+  kms_key_description             = "KMS key for EKS cluster ${var.name}-${var.env}"
   kms_key_deletion_window_in_days = 7
  
 
