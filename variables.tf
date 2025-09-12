@@ -27,3 +27,9 @@ variable "single_nat_gateway" {
   type        = bool
   default     = true
 }
+
+variable "k8s_version" {
+  description = "The Kubernetes version for the EKS cluster."
+  type        = string
+  default     = "1.33"
+}
