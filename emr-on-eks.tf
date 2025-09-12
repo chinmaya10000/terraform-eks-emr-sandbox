@@ -31,7 +31,7 @@ resource "aws_iam_role" "emr_job_role" {
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
           StringEquals = {
-            "${replace(module.eks.oidc_provider, "https://", "")}:sub" = "system:serviceaccount:emr:emr-sa"
+            "${replace(module.eks.oidc_provider, "https://", "")}:sub" = "system:serviceaccount:emr:emr-containers-sa-*"
           }
         }
       }
@@ -46,7 +46,7 @@ resource "aws_iam_role_policy_attachment" "emr_s3_attach" {
 }
 
 # ---------------------------
-# Service Account for EMR Jobs
+# # (Optional) Your manual service account if you want to run custom jobs
 # ---------------------------
 resource "kubernetes_service_account" "emr" {
   metadata {
