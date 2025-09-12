@@ -4,6 +4,12 @@ provider "aws" {
 
 terraform {
   required_version = ">= 1.5.0, < 2.0.0"
+  backend "s3" {
+    bucket = "terraform-state-youruniqueid"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+    encrypt = true
+  }
 
   required_providers {
     aws = {
@@ -13,10 +19,6 @@ terraform {
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = ">= 2.35.0, < 3.0.0"
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "~> 2.17.0"
     }
   }
 }
