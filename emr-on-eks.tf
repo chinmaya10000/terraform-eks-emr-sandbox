@@ -77,7 +77,7 @@ resource "aws_emrcontainers_virtual_cluster" "emr" {
   name = "emr-virtual-cluster-${var.env}"
 
   container_provider {
-    id   = module.eks.cluster_id
+    id   = module.eks.cluster_name
     type = "EKS"
     info {
       eks_info {
