@@ -48,7 +48,7 @@ terraform apply --auto-approve
 
 ## Post-Deployment Configuration
 
-### 1. **Configure kubectl**
+### Configure kubectl
 
 ```bash
 aws eks update-kubeconfig --name <cluster_name> --region <aws_region>
