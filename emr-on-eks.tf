@@ -46,9 +46,31 @@ resource "aws_iam_role_policy_attachment" "emr_s3_attach" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
-resource "aws_iam_role_policy_attachment" "emr_logs_attach" {
+resource "aws_iam_policy" "emr_containers_policy" {
+  name        = "emr-containers-access-${var.env}"
+  description = "Allows EMR-on-EKS jobs to access EMR containers API"
+  policy      = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "emr-containers:StartJobRun",
+          "emr-containers:DescribeJobRun",
+          "emr-containers:CancelJobRun",
+          "emr-containers:ListJobRuns",
+          "emr-containers:ListVirtualClusters",
+          "emr-containers:DescribeVirtualCluster"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "emr_containers_attach" {
   role       = aws_iam_role.emr_job_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEMRContainersFullAccess"
+  policy_arn = aws_iam_policy.emr_containers_policy.arn
 }
 
 # ---------------------------
