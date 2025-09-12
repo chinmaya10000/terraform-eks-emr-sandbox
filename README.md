@@ -80,19 +80,37 @@ kubectl get nodes
 
 Once the EMR setup is ready, you can verify it by running a sample Spark job.
 
-Example command to run Spark Pi:
+### Example: Run Spark Pi
 
 ```bash
 aws emr-containers start-job-run \
   --virtual-cluster-id <emr_virtual_cluster_id> \
   --name spark-pi-test \
+  --execution-role-arn <execution-role-arn> \
   --release-label emr-6.15.0-latest \
-  --job-role-arn <execution-role-arn> \
-  --region <aws_region> \
-  --cli-input-json file://job-config.json
+  --job-driver '{
+    "sparkSubmitJobDriver": {
+      "entryPoint": "local:///usr/lib/spark/examples/src/main/python/pi.py",
+      "sparkSubmitParameters": "--conf spark.executor.instances=2 --conf spark.executor.memory=2G --conf spark.driver.memory=1G"
+    }
+  }' \
+  --configuration-overrides '{
+    "monitoringConfiguration": {
+      "s3MonitoringConfiguration": {
+        "logUri": "s3://<your-emr-s3-bucket>/logs/"
+      }
+    }
+  }' \
+  --region <aws_region>
 ```
 
-Check job status:
+**Replace**:
+- `<emr_virtual_cluster_id>` with your Terraform output for EMR virtual cluster ID
+- `<execution-role-arn>` with your EMR job role ARN output from Terraform
+- `<your-emr-s3-bucket>` with your EMR S3 bucket output from Terraform
+- `<aws_region>` with your AWS region
+
+#### Check Job Status
 
 ```bash
 aws emr-containers describe-job-run \
@@ -132,10 +150,10 @@ terraform destroy --auto-approve
 
 ## Troubleshooting & Tips
 
-- Make sure your AWS CLI is using the correct profile and region.
-- If you encounter IAM permission errors, review and update your user policies.
-- To debug failed Spark jobs, check the job status and logs using the EMR console or AWS CLI.
-- For networking issues, verify the subnets and security group settings in your VPC.
+- Ensure your AWS CLI uses the correct profile and region.
+- If IAM errors occur, review and update your user policies.
+- Debug failed Spark jobs by checking job status and logs in the EMR console or via AWS CLI.
+- For networking issues, verify VPC subnets and security groups.
 
 ---
 
