@@ -21,7 +21,7 @@ resource "aws_iam_role" "emr_job_role" {
   name = "emr-job-role-${var.env}"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17",
+    Version = "2012-10-17"
     Statement = [
       {
         Effect = "Allow"
@@ -39,12 +39,15 @@ resource "aws_iam_role" "emr_job_role" {
   })
 }
 
+# Attach S3 Full Access policy (for Spark job logs)
 resource "aws_iam_role_policy_attachment" "emr_s3_attach" {
   role       = aws_iam_role.emr_job_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
-# ServiceAccount for EMR jobs
+# ---------------------------
+# Service Account for EMR Jobs
+# ---------------------------
 resource "kubernetes_service_account" "emr" {
   metadata {
     name      = "emr-sa"
