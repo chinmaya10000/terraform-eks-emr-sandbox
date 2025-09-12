@@ -38,7 +38,7 @@ This setup is sandbox-ready and allows you to run Spark jobs to validate the EMR
 
 ## Deployment Steps
 
-1. **Initialize Terraform**
+### 1. **Initialize Terraform**
 
 ```bash
 terraform init
@@ -46,7 +46,7 @@ terraform plan
 terraform apply --auto-approve
 
 
-2. **Check the nodes:**
+### 2. **Check the nodes:**
 
 ```bash
 kubectl get nodes
