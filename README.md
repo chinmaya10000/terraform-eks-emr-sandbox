@@ -45,20 +45,8 @@ terraform init
 terraform plan
 terraform apply --auto-approve
 
-### Configure kubectl
-
-1. **After Terraform completes, update your kubeconfig:**
-```bash
-aws eks update-kubeconfig --name <cluster_name> --region <aws_region>
 
 2. **Check the nodes:**
+
 ```bash
 kubectl get nodes
-
-## EMR-on-EKS Details
-
-- Namespace: emr
-- Service Account: emr-sa
-- Virtual Cluster ID: See Terraform output emr_virtual_cluster_id
-- S3 Bucket: See Terraform output emr_s3_bucket
-- IAM Role for EMR Jobs: See Terraform output emr_job_role
