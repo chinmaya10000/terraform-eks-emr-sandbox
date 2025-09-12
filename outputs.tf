@@ -29,17 +29,26 @@ output "configure_kubectl" {
 
 
 output "emr_namespace" {
-  value = kubernetes_namespace.emr.metadata[0].name
+  description = "Kubernetes namespace for EMR jobs"
+  value       = kubernetes_namespace.emr.metadata[0].name
 }
 
 output "emr_service_account" {
-  value = kubernetes_service_account.emr.metadata[0].name
+  description = "Service account used by EMR jobs"
+  value       = kubernetes_service_account.emr.metadata[0].name
 }
 
 output "emr_s3_bucket" {
-  value = aws_s3_bucket.emr_results.bucket
+  description = "S3 bucket for EMR job input/output"
+  value       = aws_s3_bucket.emr_results.bucket
 }
 
 output "emr_virtual_cluster_id" {
-  value = aws_emr_virtual_cluster.emr.id
+  description = "The ID of the EMR-on-EKS virtual cluster"
+  value       = aws_emrcontainers_virtual_cluster.emr.id
+}
+
+output "emr_virtual_cluster_name" {
+  description = "The name of the EMR-on-EKS virtual cluster"
+  value       = aws_emrcontainers_virtual_cluster.emr.name
 }

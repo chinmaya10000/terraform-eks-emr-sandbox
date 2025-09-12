@@ -17,6 +17,25 @@ resource "kubernetes_namespace" "emr" {
 }
 
 # IAM Role for EMR jobs (IRSA)
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+  }
+}
+
+# EMR Namespace
+resource "kubernetes_namespace" "emr" {
+  metadata {
+    name = "emr"
+  }
+}
+
+# IAM Role for EMR jobs (IRSA)
 resource "aws_iam_role" "emr_job_role" {
   name = "emr-job-role-${var.env}"
 
@@ -26,12 +45,12 @@ resource "aws_iam_role" "emr_job_role" {
       {
         Effect = "Allow"
         Principal = {
-          Service = "eks.amazonaws.com"
+          Federated = module.eks.oidc_provider_arn
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
           StringEquals = {
-            "${module.eks.cluster_oidc_issuer}:sub" = "system:serviceaccount:emr:emr-sa"
+            "${replace(module.eks.oidc_provider, "https://", "")}:sub" = "system:serviceaccount:emr:emr-sa"
           }
         }
       }
@@ -72,7 +91,8 @@ resource "aws_s3_bucket_public_access_block" "emr_results" {
   restrict_public_buckets = true
 }
 
-resource "aws_emr_virtual_cluster" "emr" {
+# EMR-on-EKS Virtual Cluster
+resource "aws_emrcontainers_virtual_cluster" "emr" {
   name = "emr-virtual-cluster-${var.env}"
 
   container_provider {
