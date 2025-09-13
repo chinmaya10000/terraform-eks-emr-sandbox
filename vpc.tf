@@ -1,3 +1,10 @@
+# -----------------------------
+# VPC Module
+# -----------------------------
+# Creates VPC with:
+# - Public + Private subnets
+# - Internet Gateway & NAT Gateways
+# - Route tables, NACLs, Security Groups
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "6.0.1"

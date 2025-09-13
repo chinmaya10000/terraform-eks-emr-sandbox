@@ -1,3 +1,7 @@
+# -----------------------------
+# Kubernetes Provider
+# -----------------------------
+# Connect to EKS cluster using AWS IAM authentication
 provider "kubernetes" {
   host                   = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
@@ -86,7 +90,7 @@ resource "kubernetes_service_account" "emr" {
   }
 }
 
-# S3 Bucket for Spark job input/output
+# S3 Bucket for EMR Job Results
 resource "random_id" "bucket_id" {
   byte_length = 4
 }

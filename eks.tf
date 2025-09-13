@@ -1,3 +1,9 @@
+# -----------------------------
+# EKS Cluster (Auto-Mode)
+# -----------------------------
+# Auto-mode creates a default managed node group
+# Nodes are in private subnets
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.0"
@@ -10,7 +16,8 @@ module "eks" {
 
   # Optional: Adds the current caller identity as an administrator via cluster access entry
   enable_cluster_creator_admin_permissions = true
-
+ 
+  # Auto-mode: automatically create a default node group
   compute_config = {
     enabled    = true
     node_pools = ["general-purpose"]

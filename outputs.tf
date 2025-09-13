@@ -27,7 +27,7 @@ output "configure_kubectl" {
   value = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.aws_region}"
 }
 
-
+# EMR Outputs
 output "emr_namespace" {
   description = "Kubernetes namespace for EMR jobs"
   value       = kubernetes_namespace.emr.metadata[0].name

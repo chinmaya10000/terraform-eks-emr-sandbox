@@ -5,6 +5,8 @@ provider "aws" {
 
 terraform {
   required_version = ">= 1.5.0, < 2.0.0"
+  
+  # Backend: S3 bucket for storing Terraform state securely
   backend "s3" {
     bucket = "terraform-state-emr-2025"
     key    = "terraform.tfstate"
