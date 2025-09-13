@@ -1,3 +1,4 @@
+# Sets the AWS region for all resources
 provider "aws" {
   region = var.aws_region
 }
