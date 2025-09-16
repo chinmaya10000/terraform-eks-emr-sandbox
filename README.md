@@ -3,7 +3,7 @@
 This Terraform project provisions a fully functional **EKS cluster** and **EMR-on-EKS virtual cluster** in AWS. It includes:
 
 - VPC with public/private subnets and NAT gateway
-- EKS cluster with managed node groups
+- EKS cluster (AutoMode)
 - EMR namespace and service account
 - IAM roles for EMR-on-EKS jobs (IRSA)
 - S3 bucket for Spark job input/output
